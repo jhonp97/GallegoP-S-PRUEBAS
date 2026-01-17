@@ -520,20 +520,21 @@ export const getInvoiceAnalytics = async (req, res) => {
   try {
     const { from, to } = req.query;
 
+    //  Match base
     const match = {
-      deletedAt: null,
-      status: "issued"
+      deletedAt: null
     };
 
+    //  Filtro por fechas
     if (from || to) {
       match.date = {};
       if (from) match.date.$gte = new Date(from);
       if (to) match.date.$lte = new Date(to);
     }
 
-    //  KPIs
+    //  KPIs (solo emitidas)
     const summary = await Invoice.aggregate([
-      { $match: match },
+      { $match: { ...match, status: "issued" } },
       {
         $group: {
           _id: null,
@@ -560,7 +561,7 @@ export const getInvoiceAnalytics = async (req, res) => {
 
     //  Facturación por fecha
     const byDate = await Invoice.aggregate([
-      { $match: match },
+      { $match: { ...match, status: "issued" } },
       {
         $group: {
           _id: {
@@ -572,9 +573,9 @@ export const getInvoiceAnalytics = async (req, res) => {
       { $sort: { _id: 1 } }
     ]);
 
-    //  Por estado
+    //  Por estado 
     const byStatus = await Invoice.aggregate([
-      { $match: { deletedAt: null } },
+      { $match: match },
       {
         $group: {
           _id: "$status",
@@ -584,33 +585,33 @@ export const getInvoiceAnalytics = async (req, res) => {
     ]);
 
     //  Top clientes
-    const topClients = await Invoice.aggregate([
-      { $match: match },
-      {
-        $group: {
-          _id: "$client.name",
-          total: { $sum: "$total" },
-          invoices: { $sum: 1 }
-        }
-      },
-      { $sort: { total: -1 } },
-      { $limit: 5 }
-    ]);
+    // const topClients = await Invoice.aggregate([
+    //   { $match: { ...match, status: "issued" } },
+    //   {
+    //     $group: {
+    //       _id: "$client.name",
+    //       total: { $sum: "$total" },
+    //       invoices: { $sum: 1 }
+    //     }
+    //   },
+    //   { $sort: { total: -1 } },
+    //   { $limit: 5 }
+    // ]);
 
-    //  Servicios más vendidos
-    const topServices = await Invoice.aggregate([
-      { $match: match },
-      { $unwind: "$lines" },
-      {
-        $group: {
-          _id: "$lines.description",
-          total: { $sum: "$lines.lineTotal" },
-          qty: { $sum: "$lines.qty" }
-        }
-      },
-      { $sort: { total: -1 } },
-      { $limit: 5 }
-    ]);
+    // //  Servicios más vendidos
+    // const topServices = await Invoice.aggregate([
+    //   { $match: { ...match, status: "issued" } },
+    //   { $unwind: "$lines" },
+    //   {
+    //     $group: {
+    //       _id: "$lines.description",
+    //       total: { $sum: "$lines.lineTotal" },
+    //       qty: { $sum: "$lines.qty" }
+    //     }
+    //   },
+    //   { $sort: { total: -1 } },
+    //   { $limit: 5 }
+    // ]);
 
     res.json({
       summary: summary[0] || {
@@ -621,8 +622,8 @@ export const getInvoiceAnalytics = async (req, res) => {
       },
       byDate,
       byStatus,
-      topClients,
-      topServices
+      // topClients,
+      // topServices
     });
 
   } catch (error) {
@@ -630,6 +631,7 @@ export const getInvoiceAnalytics = async (req, res) => {
     res.status(500).json({ message: "Error obteniendo estadísticas" });
   }
 };
+
 
 export const exportInvoicesCSV = async (req, res) => {
   try {
