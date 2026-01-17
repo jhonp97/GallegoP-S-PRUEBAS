@@ -1,0 +1,362 @@
+.gallery-page {
+  padding: 2rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+
+  & h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    color: var(--primary-color);
+  }
+
+  & h2 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+}
+
+.gallery-page .album-carousel-wrapper {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .gallery-page .admin-photo-card {
+    width: 70vw;
+    height: 46vw;
+    max-width: 260px;
+    max-height: 180px;
+  }
+}
+
+
+.album-selector {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.album-selector button {
+  padding: .75rem 1.5rem;
+  border-radius: 8px;
+  background: #111827;
+  color: white;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.photo-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.03);
+}
+
+
+
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Contenedor interno para capturar eventos y centrar contenido */
+.lightbox-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  /* Permitir gestos verticales en la página, pero capturar horizontales en el elemento */
+  touch-action: pan-y;
+}
+
+/* Imagen con transform dinámico */
+.lightbox-img {
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 12px;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  touch-action: none;
+}
+
+/* Botón cerrar */
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Navegación */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  z-index: 10;
+  transition: background 150ms ease;
+}
+
+.lightbox-nav:hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.left {
+  left: 20px;
+}
+
+.right {
+  right: 20px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 600px) {
+  .lightbox-nav {
+    font-size: 2.4rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .lightbox-close {
+    font-size: 1.6rem;
+    right: 80%;
+    top: 20px;
+  }
+}
+
+/* ADMIN */
+.admin-gallery {
+  padding: 1rem;
+}
+
+.admin-gallery h1 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: var(--primary-color);
+
+}
+
+/* 🔹 Upload box */
+.gallery-upload {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.gallery-upload select,
+.gallery-upload input[type="file"] {
+
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+
+  font-size: 1rem;
+  padding: 1.5em;
+  border: 2px dashed #bbb;
+  background-color: #fff;
+  transition: border-color .25s ease-in-out;
+
+  &::file-selector-button {
+
+
+    padding: 1em 1.5em;
+    border-width: 0;
+    border-radius: 2em;
+    background-color: hsl(210 70% 30%);
+    color: hsl(210 40% 90%);
+    transition: all .25s ease-in-out;
+    cursor: pointer;
+    margin-right: 1em;
+  }
+
+  &:hover {
+    border-color: #888;
+
+    &::file-selector-button {
+
+      background-color: hsl(210 70% 40%);
+    }
+  }
+}
+
+
+.gallery-upload button {
+  background: var(--primary-color);
+  border: none;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-gallery button:hover {
+
+  scale: 1.05;
+  transition: all 0.3s ease;
+}
+
+.admin-gallery button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 🔹 Álbum */
+.admin-album {
+  margin-bottom: 2rem;
+}
+
+.admin-album h2 {
+  margin-bottom: 0.75rem;
+  text-transform: capitalize;
+}
+
+.album-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border: none;
+  font-size: 1.8rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.scroll-btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.scroll-btn.left {
+  left: 4px;
+}
+
+.scroll-btn.right {
+  right: 4px;
+}
+
+.admin-album-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+
+  /* Scroll suave tipo carrusel */
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  /* Swipe natural */
+  -webkit-overflow-scrolling: touch;
+
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+}
+
+.admin-album-scroll::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
+.admin-photo-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 260px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  scroll-snap-align: start;
+}
+
+.admin-photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.admin-photo-card img:hover {
+  transform: scale(1.05);
+}
+
+
+
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgb(168, 1, 34);
+  border: none;
+  color: rgb(255, 255, 255);
+  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 1px 1px;
+  cursor: pointer;
+}
+
+
+/* 🔹 Responsive */
+@media (max-width: 768px) {
+  .gallery-upload {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gallery-upload select,
+  .gallery-upload input[type="file"] {
+    width: 100%;
+  }
+}

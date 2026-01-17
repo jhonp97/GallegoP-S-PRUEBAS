@@ -1,0 +1,98 @@
+@baseUrl = http://localhost:4000/api
+@cookie = token=PEGA_AQUI_TU_TOKEN
+
+### Seed Admin (solo una vez por entorno)
+POST {{baseUrl}}/auth/seed-admin
+Content-Type: application/json
+
+{
+  "userName": "admin_test",
+  "password": "PASSWORD_AQUI",
+  "name": "Admin"
+}
+
+###
+
+### Login (dev)
+# Copia el set-cookie del response y pégalo en @cookie
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "userName": "admin_test",
+  "password": "PASSWORD_AQUI"
+}
+
+###
+
+### Preview factura (no se guarda)
+POST {{baseUrl}}/invoices/preview
+Content-Type: application/json
+
+{
+  "client": {
+    "name": "Cliente Ejemplo",
+    "address": "Calle Falsa 123"
+  },
+  "lines": [
+    { "description": "Servicio ejemplo", "qty": 2, "unitPrice": 50 }
+  ],
+  "ivaPercent": 21,
+  "irpfPercent": 0
+}
+
+###
+
+### Crear factura
+POST {{baseUrl}}/invoices
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "client": {
+    "name": "Cliente Demo",
+    "address": "Dirección Demo 456"
+  },
+  "lines": [
+    { "description": "Trabajo demo", "qty": 3, "unitPrice": 70 }
+  ],
+  "ivaPercent": 21,
+  "irpfPercent": 0
+}
+
+###
+
+### Listar facturas
+GET {{baseUrl}}/invoices
+Cookie: {{cookie}}
+
+###
+
+### Descargar PDF
+# Reemplaza ID_AQUI por un id real
+GET {{baseUrl}}/invoices/ID_AQUI/pdf
+Cookie: {{cookie}}
+
+###
+
+### Eliminar factura
+DELETE {{baseUrl}}/invoices/ID_AQUI
+Cookie: {{cookie}}
+
+###
+
+### Resetear contraseña
+PATCH {{baseUrl}}/auth/reset-password
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "userName": "admin_test",
+  "newPassword": "NUEVA_PASSWORD"
+}
+
+###
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Cookie: {{cookie}}
