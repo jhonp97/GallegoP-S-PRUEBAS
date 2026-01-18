@@ -21,6 +21,10 @@ app.use(cors({
   credentials: true // necesario si usamos cookies
 }));
 
+app.use("/health", (req, res) => {
+  res.status(200).send("Servidor corriendo correctamente");
+});
+
 // rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/invoices', invoiceRoutes);

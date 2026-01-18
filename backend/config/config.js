@@ -2,12 +2,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const port = process.env.PORT || 5000;
+export const port = process.env.PORT || 4000;
 export const nodeEnv = process.env.NODE_ENV || 'development';
-//export const mongoURI = process.env.MONGO_URI;
-export const mongoURI = process.env.NODE_ENV === 'production'
-  ? process.env.MONGO_URI_PROD
-  : process.env.MONGO_URI_DEV;
+export const mongoURI = process.env.MONGO_URI;
+// export const mongoURI = process.env.NODE_ENV === 'production'
+//   ? process.env.MONGO_URI_PROD
+//   : process.env.MONGO_URI_DEV;
 
 export const jwtSecret = process.env.JWT_SECRET;
 export const jwtExp = process.env.JWT_EXP || '7d';
