@@ -51,11 +51,15 @@ app.use(errorHandler);
     const collections = await db.listCollections().toArray();
     console.log('Colecciones en la base:', collections.map(c => c.name).join(', '));
 
-    app.listen(port, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
-    });
+    if (process.env.NODE_ENV === "development") {
+        app.listen(port, () => {
+        console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
+      });
+    }
   } catch (err) {
     console.error('🔴 Error conectando a MongoDB:', err);
     process.exit(1);
   }
 })();
+
+export default app;
